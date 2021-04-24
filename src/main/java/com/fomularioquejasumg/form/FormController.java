@@ -1,7 +1,6 @@
 package com.fomularioquejasumg.form;
 
 
-import com.fomularioquejasumg.Address.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,8 +15,8 @@ public class FormController {
     FormService formService;
 
     @PostMapping("/form")
-    public ResponseEntity getFormData(@RequestBody Address address) {
-        return new ResponseEntity( formService.saveAddress(address.getIdMunicipio(), address.getAddress()), HttpStatus.OK );
+    public ResponseEntity getFormData(@RequestBody Forma forma) {
+        return new ResponseEntity( formService.saveQueja(forma), HttpStatus.OK );
     }
 
 
