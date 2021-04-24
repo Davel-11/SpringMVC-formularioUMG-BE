@@ -2,6 +2,8 @@ package com.fomularioquejasumg.form;
 
 import com.fomularioquejasumg.Address.Address;
 import com.fomularioquejasumg.Address.AddressRepo;
+import com.fomularioquejasumg.Complain.Complain;
+import com.fomularioquejasumg.Complain.ComplainRepo;
 import com.fomularioquejasumg.Contact.Contact;
 import com.fomularioquejasumg.Contact.ContactRepo;
 import com.fomularioquejasumg.Provider.Provider;
@@ -9,6 +11,7 @@ import com.fomularioquejasumg.Provider.ProviderRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Logger;
 
 @Service
@@ -19,11 +22,13 @@ public class FormService {
     private AddressRepo addressRepo;
     private ContactRepo contactRepo;
     private ProviderRepo providerRepo;
+    private ComplainRepo complainRepo;
 
-    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo) {
+    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo, ComplainRepo complainRepo) {
         this.addressRepo = addressRepo;
         this.contactRepo = contactRepo;
         this.providerRepo = providerRepo;
+        this.complainRepo = complainRepo;
     }
 
     public Integer saveAddress(Integer idMunicipio, String iAddress) {
@@ -55,6 +60,11 @@ public class FormService {
         }
     }
 
+    public Integer saveComplain(String complainText, String requestText, Integer idProvider, Date complainDate, String invoiceId, Integer idSede) {
+        Complain complain = new Complain(complainText, requestText, idProvider, complainDate, invoiceId, idSede);
+        return complainRepo.save(complain).getId();
+    }
+
     public ArrayList<Integer> saveQueja(Forma forma) {
 
 
@@ -69,10 +79,20 @@ public class FormService {
                 forma.getName()
         );
 
+        Integer complainId = saveComplain(
+                    forma.getComplainText(),
+                    forma.getRequestText(),
+                    providerId,
+                    forma.getComplainDate(),
+                    forma.getInvoiceId(),
+                    forma.getIdSede()
+                );
+
         ArrayList<Integer> returList  = new ArrayList<>();
         returList.add(addressId);
         returList.add(contactId);
         returList.add(providerId);
+        returList.add(complainId);
 
         return returList;
     }

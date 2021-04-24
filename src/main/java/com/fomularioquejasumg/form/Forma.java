@@ -1,5 +1,7 @@
 package com.fomularioquejasumg.form;
 
+import java.util.Date;
+
 public class Forma {
 
     private Integer idMunicipio;
@@ -10,6 +12,13 @@ public class Forma {
     private String socialReason;
     private String nit;
     private String name;
+
+    String complainText;
+    String requestText;
+    Date complainDate;
+    String invoiceId;
+    Integer idSede;
+
 
     public Forma() {
     }
@@ -68,5 +77,45 @@ public class Forma {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getComplainText() {
+        return complainText;
+    }
+
+    public void setComplainText(String complainText) {
+        this.complainText = complainText;
+    }
+
+    public String getRequestText() {
+        return requestText;
+    }
+
+    public void setRequestText(String requestText) {
+        this.requestText = requestText;
+    }
+
+    public Date getComplainDate() {
+        return complainDate;
+    }
+
+    public void setComplainDate(Date complainDate) {
+        this.complainDate = complainDate;
+    }
+
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
+    public Integer getIdSede() {
+        return idSede;
+    }
+
+    public void setIdSede(Integer idSede) {
+        this.idSede = idSede;
     }
 }
