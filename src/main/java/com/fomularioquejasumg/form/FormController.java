@@ -19,5 +19,13 @@ public class FormController {
         return new ResponseEntity( formService.saveQueja(forma), HttpStatus.OK );
     }
 
+    @GetMapping()
+    public ResponseEntity getReportByDates(
+            @RequestParam(value = "from", required = true) String from,
+            @RequestParam(value = "to", required = true) String to
+    ) {
+        return new ResponseEntity( formService.getReportOne(from, to), HttpStatus.OK);
+    }
+
 
 }

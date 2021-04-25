@@ -8,6 +8,8 @@ import com.fomularioquejasumg.Contact.Contact;
 import com.fomularioquejasumg.Contact.ContactRepo;
 import com.fomularioquejasumg.Provider.Provider;
 import com.fomularioquejasumg.Provider.ProviderRepo;
+import com.fomularioquejasumg.ReporteFecha.Region;
+import com.fomularioquejasumg.ReporteFecha.RegionRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,12 +25,14 @@ public class FormService {
     private ContactRepo contactRepo;
     private ProviderRepo providerRepo;
     private ComplainRepo complainRepo;
+    private RegionRepo regionRepo;
 
-    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo, ComplainRepo complainRepo) {
+    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo, ComplainRepo complainRepo, RegionRepo regionRepo) {
         this.addressRepo = addressRepo;
         this.contactRepo = contactRepo;
         this.providerRepo = providerRepo;
         this.complainRepo = complainRepo;
+        this.regionRepo = regionRepo;
     }
 
     public Integer saveAddress(Integer idMunicipio, String iAddress) {
@@ -96,6 +100,20 @@ public class FormService {
 
         return returList;
     }
+
+    public Iterable<Region> getReportOne(String from, String to) {
+
+        try {
+
+           return regionRepo.getReportByDates(from, to);
+
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+            return null;
+        }
+
+    }
+
 }
 
 
