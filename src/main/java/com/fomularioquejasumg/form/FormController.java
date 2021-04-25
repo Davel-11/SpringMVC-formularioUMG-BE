@@ -27,5 +27,10 @@ public class FormController {
         return new ResponseEntity( formService.getReportOne(from, to), HttpStatus.OK);
     }
 
+    @GetMapping("/dep")
+    public ResponseEntity getDeptos() {
+        return new ResponseEntity( formService.getDepList(), HttpStatus.OK );
+    }
+
 
 }

@@ -6,6 +6,11 @@ import com.fomularioquejasumg.Complain.Complain;
 import com.fomularioquejasumg.Complain.ComplainRepo;
 import com.fomularioquejasumg.Contact.Contact;
 import com.fomularioquejasumg.Contact.ContactRepo;
+import com.fomularioquejasumg.DepMuni.DepoMuni;
+import com.fomularioquejasumg.Departamento.Departamento;
+import com.fomularioquejasumg.Departamento.DepartamentoRepo;
+import com.fomularioquejasumg.Municipio.Municipio;
+import com.fomularioquejasumg.Municipio.MunicipioRepo;
 import com.fomularioquejasumg.Provider.Provider;
 import com.fomularioquejasumg.Provider.ProviderRepo;
 import com.fomularioquejasumg.ReporteFecha.Region;
@@ -27,12 +32,19 @@ public class FormService {
     private ComplainRepo complainRepo;
     private RegionRepo regionRepo;
 
-    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo, ComplainRepo complainRepo, RegionRepo regionRepo) {
+    private DepartamentoRepo departamentoRepo;
+    private MunicipioRepo municipioRepo;
+
+    public FormService(AddressRepo addressRepo, ContactRepo contactRepo, ProviderRepo providerRepo,
+                       ComplainRepo complainRepo, RegionRepo regionRepo, DepartamentoRepo departamentoRepo,
+                       MunicipioRepo municipioRepo) {
         this.addressRepo = addressRepo;
         this.contactRepo = contactRepo;
         this.providerRepo = providerRepo;
         this.complainRepo = complainRepo;
         this.regionRepo = regionRepo;
+        this.departamentoRepo = departamentoRepo;
+        this.municipioRepo = municipioRepo;
     }
 
     public Integer saveAddress(Integer idMunicipio, String iAddress) {
@@ -112,6 +124,47 @@ public class FormService {
             return null;
         }
 
+    }
+
+    public ArrayList<DepoMuni> getDepList() {
+        try {
+
+            Iterable<Departamento> depList = departamentoRepo.findAll();
+            Iterable<Municipio> muniList = municipioRepo.findAll();
+
+
+            return createDepoMuniList(depList, muniList);
+
+        } catch (Exception e) {
+            logger.severe(e.getMessage());
+            return null;
+        }
+    }
+
+    public ArrayList<DepoMuni> createDepoMuniList(Iterable<Departamento> depList,  Iterable<Municipio> muniList) {
+
+
+
+        ArrayList<DepoMuni> depoMuniList = new ArrayList<>();
+
+        depList.forEach(departamento -> {
+            Integer depId = departamento.getId();
+
+            // get Municipios
+            ArrayList<Municipio> municipiosArray = new ArrayList<>();
+
+            muniList.forEach(municipio -> {
+                if (municipio.getIdDep() == depId) {
+                    municipiosArray.add(municipio);
+                }
+            });
+
+            DepoMuni depoMuni = new DepoMuni(departamento, municipiosArray);
+            depoMuniList.add(depoMuni);
+
+        });
+
+        return depoMuniList;
     }
 
 }
